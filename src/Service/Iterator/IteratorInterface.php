@@ -10,9 +10,5 @@ use Iterator;
  */
 interface IteratorInterface extends Iterator, Countable
 {
-    /**
-     * @param array $data
-     * @return void
-     */
     public function push(array $data): void;
 }

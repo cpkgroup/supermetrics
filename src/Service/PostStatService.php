@@ -5,15 +5,13 @@ namespace App\Service;
 use App\Entity\Post;
 
 /**
- *
- * Class StatService
- * @package App\Service
+ * Class StatService.
  */
 class PostStatService
 {
     /**
-     *
      * @param Post[] $posts
+     *
      * @return array
      */
     public function averageLengthOfPostsPerMonth($posts)
@@ -30,8 +28,8 @@ class PostStatService
     }
 
     /**
-     *
      * @param Post[] $posts
+     *
      * @return array
      */
     public function longestPostLengthPerMonth($posts)
@@ -48,8 +46,8 @@ class PostStatService
     }
 
     /**
-     *
      * @param Post[] $posts
+     *
      * @return array
      */
     public function totalPostsByWeekNumber($posts)
@@ -58,15 +56,15 @@ class PostStatService
         foreach ($posts as $post) {
             $week = $post->getWeek();
             $weeks[$week] ??= 0;
-            $weeks[$week]++;
+            ++$weeks[$week];
         }
 
         return $weeks;
     }
 
     /**
-     *
      * @param Post[] $posts
+     *
      * @return array
      */
     public function averageNumberOfPostsPerUserPerMonth($posts)
@@ -78,7 +76,7 @@ class PostStatService
             $month = $post->getMonth();
             $users[$userId] = $post->getFromName();
             $usersMonths[$userId][$month] ??= 0;
-            $usersMonths[$userId][$month]++;
+            ++$usersMonths[$userId][$month];
         }
 
         $result = [];
@@ -87,7 +85,7 @@ class PostStatService
             $result[] = [
                 'User Id' => $userId,
                 'User Name' => $userName,
-                'Average Posts Per Month' => $average
+                'Average Posts Per Month' => $average,
             ];
         }
 

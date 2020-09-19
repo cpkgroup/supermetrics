@@ -14,22 +14,22 @@ class FileLogger implements LoggerInterface
      */
     public function __construct()
     {
-        $fileName = getenv('ROOT_PATH') . 'var/log/' . date('Ymd') . '.txt';
+        $fileName = getenv('ROOT_PATH').'var/log/'.date('Ymd').'.txt';
         $this->fileHandler = fopen($fileName, 'a');
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
-    public function error($message, array $context = array())
+    public function error($message, array $context = [])
     {
         $this->log('ERROR', $message, $context);
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
-    public function info($message, array $context = array())
+    public function info($message, array $context = [])
     {
         $this->log('INFO', $message, $context);
     }
@@ -37,11 +37,10 @@ class FileLogger implements LoggerInterface
     /**
      * @param $type
      * @param $message
-     * @param array $context
      */
-    private function log($type, $message, array $context = array())
+    private function log($type, $message, array $context = [])
     {
-        $data = '[' . date('Y-m-d H:i:s') . '] ' . $type . ': ' . $message . ' ' . json_encode($context) . "\n";
+        $data = '['.date('Y-m-d H:i:s').'] '.$type.': '.$message.' '.json_encode($context)."\n";
         fwrite($this->fileHandler, $data);
     }
 

@@ -1,8 +1,8 @@
 <?php
 /**
- * Include composer autoloader
+ * Include composer autoloader.
  */
-include getenv('ROOT_PATH') . 'vendor/autoload.php';
+include getenv('ROOT_PATH').'vendor/autoload.php';
 
 use App\Entity\Post;
 use App\Service\Cache\FileCache;
