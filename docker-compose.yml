@@ -7,7 +7,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./public:/public
+      - ./public:/www/public
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     links:
       - php
@@ -15,12 +15,7 @@ services:
     container_name: php
     build: ./docker/php
     volumes:
-      - ./public:/public
-      - ./vendor:/www/vendor
-      - ./var/cache:/www/var/cache
-      - ./var/log:/www/var/log
-      - ./src:/www/src
-      - ./composer.json:/www/composer.json
+      - ./:/www
     environment:
       - ROOT_PATH=/www/
     env_file:
