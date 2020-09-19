@@ -1,4 +1,4 @@
-# Developer Test Supermetrics Coding Challenge
+# Supermetrics Coding Challenge
 
 ## Installation
 
@@ -21,6 +21,22 @@ docker-compose run php composer install
 docker-compose up -d
 ```
 
+## Tests
+
+- Run from the project root:
+
+```
+docker-compose run php /www/vendor/bin/phpunit
+```
+
+- Run this to see the unit-test coverage:
+
+```
+docker-compose run php /www/vendor/bin/phpunit --coverage-html /www/var/coverage
+```
+
+See the results in var/coverage/index.html
+
 ## See Test Results:
 
 - Average character length of posts per month
@@ -42,6 +58,11 @@ docker-compose up -d
 ## Technologies
 - Docker
 - PHP 7.4
+- Nginx
+
+## External libraries
+- Guzzle
+- Phpunit
 
 ## Author
 - [Mohamad Habibi](https://www.linkedin.com/in/habibimh) 

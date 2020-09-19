@@ -5,7 +5,6 @@ namespace App\Entity;
 use DateTime;
 
 /**
- * TODO: remove id, type, message and add messageLen
  * Class Post.
  */
 class Post
