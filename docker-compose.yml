@@ -16,6 +16,8 @@ services:
     build: ./docker/php
     volumes:
       - ./:/www
+      - ./var/cache:/www/var/cache
+      - ./var/log:/www/var/log
     environment:
       - ROOT_PATH=/www/
     env_file:
