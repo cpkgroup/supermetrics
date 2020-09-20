@@ -2,21 +2,11 @@
 
 namespace App\Service\Logger;
 
+use App\Service\File\FileUpdaterTrait;
+
 class FileLogger implements LoggerInterface
 {
-    /**
-     * @var false|resource
-     */
-    private $fileHandler;
-
-    /**
-     * FileLogger constructor.
-     */
-    public function __construct()
-    {
-        $fileName = getenv('ROOT_PATH').'var/log/'.date('Ymd').'.txt';
-        $this->fileHandler = fopen($fileName, 'a');
-    }
+    use FileUpdaterTrait;
 
     /**
      * {@inheritdoc}
@@ -34,21 +24,17 @@ class FileLogger implements LoggerInterface
         $this->log('INFO', $message, $context);
     }
 
-    /**
-     * @param $type
-     * @param $message
-     */
-    private function log($type, $message, array $context = [])
+    private function log(string $type, string $message, array $context = [])
     {
         $data = '['.date('Y-m-d H:i:s').'] '.$type.': '.$message.' '.json_encode($context)."\n";
-        fwrite($this->fileHandler, $data);
+        $this->writeInFile($this->getFilePath(), $data);
     }
 
     /**
-     * FileLogger destruct.
+     * @return string
      */
-    public function __destruct()
+    private function getFilePath()
     {
-        fclose($this->fileHandler);
+        return getenv('ROOT_PATH').'var/log/'.date('Ymd').'.txt';
     }
 }

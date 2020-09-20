@@ -230,7 +230,7 @@ class PostStatServiceTest extends TestCase
                         [
                             'User Id' => 5,
                             'User Name' => 'Carson Smithson',
-                            'Average Posts Per Month' => 2,
+                            'Average Posts Per Month' => 2.0,
                         ],
                         [
                             'User Id' => 1,

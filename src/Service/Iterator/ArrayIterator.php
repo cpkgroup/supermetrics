@@ -14,7 +14,8 @@ class ArrayIterator implements IteratorInterface
     private int $idx = 0;
 
     /**
-     * When className parameter sent, the current item will be pass to the class name.
+     * When className parameter sent, first create an object from class
+     * then the current item will be pass as the constructor param to the class object.
      */
     public function __construct(string $className = null)
     {
@@ -41,7 +42,7 @@ class ArrayIterator implements IteratorInterface
     }
 
     /**
-     * @return array|false
+     * @return object|array|false
      */
     public function current()
     {

@@ -24,13 +24,16 @@ switch ($action) {
             'timeout' => getenv('API_TIMEOUT'),
         ]);
         $logger = new FileLogger();
-        $iterator = new ArrayIterator(Post::class);
         $cache = new FileCache($logger);
 
-        $dataProvider = new ApiDataProvider($client, $iterator, $cache, $logger);
-        $statService = new PostStatService();
+        $dataProvider = new ApiDataProvider($client, $logger, $cache);
+        $posts = new ArrayIterator(Post::class);
+        $offset = getenv('DATA_OFFSET');
+        $limit = getenv('DATA_LIMIT');
+        $dataProvider->prepareData($posts, $offset, $limit);
 
-        $result = $statService->$action($dataProvider->prepareData());
+        $statService = new PostStatService();
+        $result = $statService->$action($posts);
         break;
     default:
         $result = ['error' => 'Action not found'];

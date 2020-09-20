@@ -13,25 +13,21 @@ class ApiDataProvider implements DataProviderInterface
 {
     private Client $client;
 
-    private IteratorInterface $itrator;
+    private LoggerInterface $logger;
 
     private CacheInterface $cache;
-
-    private LoggerInterface $logger;
 
     /**
      * ApiDataProvider constructor.
      */
     public function __construct(
         Client $client,
-        IteratorInterface $itrator,
-        CacheInterface $cache,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        CacheInterface $cache
     ) {
         $this->client = $client;
-        $this->itrator = $itrator;
-        $this->cache = $cache;
         $this->logger = $logger;
+        $this->cache = $cache;
     }
 
     /**
@@ -97,25 +93,43 @@ class ApiDataProvider implements DataProviderInterface
     }
 
     /**
-     * @return IteratorInterface
+     * @return bool|mixed
      */
-    public function prepareData()
+    private function fetchCachedPosts(int $page)
     {
-        for ($i = 1; $i <= getenv('LAST_PAGE'); ++$i) {
-            if (!$pagePosts = $this->cache->get($i)) {
-                $pagePosts = $this->fetchPosts($i);
-                if ($pagePosts) {
-                    $this->cache->set($i, $pagePosts);
-                }
-            }
-
-            if ($pagePosts) {
-                foreach ($pagePosts as $post) {
-                    $this->itrator->push($post);
-                }
+        $posts = $this->cache->get($page);
+        if (!$posts) {
+            $posts = $this->fetchPosts($page);
+            if ($posts) {
+                $this->cache->set($page, $posts);
             }
         }
 
-        return $this->itrator;
+        return $posts;
+    }
+
+    /**
+     * Fill posts into the $itrator object by offset and limit.
+     */
+    public function prepareData(IteratorInterface $itrator, int $offset, int $limit)
+    {
+        $this->logger->info('[API][PREPARE_DATA] start to prepare data from: '.$offset.' to '.$limit);
+        $counter = 0;
+        for ($i = getenv('FIRST_PAGE'); $i <= getenv('LAST_PAGE'); ++$i) {
+            $posts = $this->fetchCachedPosts($i);
+            if (!$posts) {
+                $this->logger->error('[API][PREPARE_DATA] Posts not found, page: '.$i);
+                continue;
+            }
+            foreach ($posts as $post) {
+                ++$counter;
+                if ($offset < $counter) {
+                    $itrator->push($post);
+                }
+                if ($counter >= $offset + $limit) {
+                    break 2;
+                }
+            }
+        }
     }
 }

@@ -10,6 +10,8 @@ use App\Entity\Post;
 class PostStatService
 {
     /**
+     * Calculate average character length of posts per month.
+     *
      * @param Post[] $posts
      *
      * @return array
@@ -28,6 +30,8 @@ class PostStatService
     }
 
     /**
+     * Find longest post by character length per month.
+     *
      * @param Post[] $posts
      *
      * @return array
@@ -46,6 +50,8 @@ class PostStatService
     }
 
     /**
+     * Calculate total posts split by week number.
+     *
      * @param Post[] $posts
      *
      * @return array
@@ -63,6 +69,8 @@ class PostStatService
     }
 
     /**
+     * Calculate average number of posts per user per month.
+     *
      * @param Post[] $posts
      *
      * @return array

@@ -2,6 +2,7 @@
 
 namespace App\Service\Cache;
 
+use App\Service\File\FileUpdaterTrait;
 use App\Service\Logger\LoggerInterface;
 
 /**
@@ -9,6 +10,8 @@ use App\Service\Logger\LoggerInterface;
  */
 class FileCache implements CacheInterface
 {
+    use FileUpdaterTrait;
+
     private LoggerInterface $logger;
 
     /**
@@ -24,9 +27,9 @@ class FileCache implements CacheInterface
      */
     public function get($key)
     {
-        $file = $this->getFileName($key);
-        if (is_file($file)) {
-            $data = file_get_contents($file);
+        $filePath = $this->getFilePath($key);
+        if ($this->isExist($filePath)) {
+            $data = $this->getFileContents($filePath);
             $cacheData = json_decode($data, true);
 
             if (isset($cacheData['lifeTime']) && $cacheData['lifeTime'] > time()) {
@@ -44,12 +47,11 @@ class FileCache implements CacheInterface
      */
     public function set($key, $data): void
     {
-        $file = $this->getFileName($key);
         $cacheData = [
             'lifeTime' => time() + getenv('CACHE_LIFETIME'),
             'data' => $data,
         ];
-        if (file_put_contents($file, json_encode($cacheData))) {
+        if ($this->putFileContents($this->getFilePath($key), json_encode($cacheData))) {
             $this->logger->info('[CACHE][SET] Key: '.$key);
         } else {
             $this->logger->error('[CACHE][SET] Failed, Key: '.$key);
@@ -61,7 +63,7 @@ class FileCache implements CacheInterface
      *
      * @return string
      */
-    private function getFileName($key)
+    private function getFilePath($key)
     {
         return getenv('ROOT_PATH').'var/cache/'.$key.'.txt';
     }

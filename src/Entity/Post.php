@@ -117,34 +117,22 @@ class Post
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getMessageLength()
+    public function getMessageLength(): int
     {
         return strlen($this->getMessage());
     }
 
-    /**
-     * @return int
-     */
-    public function getUserId()
+    public function getUserId(): int
     {
         return (int) str_replace('user_', '', $this->getFromId());
     }
 
-    /**
-     * @return string
-     */
-    public function getMonth()
+    public function getMonth(): string
     {
         return $this->getCreatedTime()->format('Y-m');
     }
 
-    /**
-     * @return string
-     */
-    public function getWeek()
+    public function getWeek(): string
     {
         return $this->getCreatedTime()->format('Y-W');
     }

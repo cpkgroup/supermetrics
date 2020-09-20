@@ -7,18 +7,14 @@ interface LoggerInterface
     /**
      * Runtime errors.
      *
-     * @param string $message
-     *
      * @return void
      */
-    public function error($message, array $context = []);
+    public function error(string $message, array $context = []);
 
     /**
      * Interesting events.
      *
-     * @param string $message
-     *
      * @return void
      */
-    public function info($message, array $context = []);
+    public function info(string $message, array $context = []);
 }
